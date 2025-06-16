@@ -1,0 +1,1175 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ComfyUI 许可证管理中心</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, 'Roboto', 'Helvetica Neue', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            animation: fadeIn 0.8s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .container {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            border-radius: 24px;
+            box-shadow: 0 32px 64px rgba(0, 0, 0, 0.15), 0 0 0 1px rgba(255, 255, 255, 0.2);
+            padding: 40px;
+            width: 100%;
+            max-width: 900px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, #667eea, #764ba2, #f093fb, #f5576c);
+            animation: shimmer 3s ease-in-out infinite;
+        }
+
+        @keyframes shimmer {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.7; }
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .header-icon {
+            font-size: 56px;
+            margin-bottom: 16px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        .title {
+            font-size: 32px;
+            font-weight: 700;
+            color: #2c3e50;
+            margin-bottom: 8px;
+            letter-spacing: -0.5px;
+        }
+
+        .subtitle {
+            font-size: 16px;
+            color: #7f8c8d;
+            line-height: 1.6;
+        }
+
+        .tabs {
+            display: flex;
+            background: #f8f9fc;
+            border-radius: 16px;
+            padding: 6px;
+            margin-bottom: 32px;
+            box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.06);
+            flex-wrap: wrap;
+        }
+
+        .tab {
+            flex: 1;
+            padding: 14px 16px;
+            text-align: center;
+            border-radius: 12px;
+            font-weight: 600;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            min-width: 120px;
+        }
+
+        .tab.active {
+            background: white;
+            color: #667eea;
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.15), 0 2px 4px rgba(0, 0, 0, 0.08);
+            transform: translateY(-1px);
+        }
+
+        .tab:not(.active) {
+            color: #6c757d;
+        }
+
+        .tab:hover:not(.active) {
+            color: #495057;
+            background: rgba(255, 255, 255, 0.7);
+        }
+
+        .tab-content {
+            display: none;
+            animation: slideIn 0.4s ease-out;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateX(20px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+
+        .form-group {
+            margin-bottom: 24px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: #2c3e50;
+            font-weight: 600;
+            font-size: 14px;
+        }
+
+        .form-group label i {
+            margin-right: 8px;
+            color: #667eea;
+        }
+
+        .input-wrapper {
+            position: relative;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 16px 20px;
+            border: 2px solid #e9ecef;
+            border-radius: 12px;
+            font-size: 16px;
+            font-family: 'SF Mono', 'Monaco', 'Cascadia Code', monospace;
+            transition: all 0.3s ease;
+            background: #fdfdfe;
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.1);
+            background: white;
+        }
+
+        .form-control::placeholder {
+            color: #adb5bd;
+        }
+
+        .btn {
+            padding: 16px 32px;
+            border: none;
+            border-radius: 12px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            text-decoration: none;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: left 0.6s;
+        }
+
+        .btn:hover::before {
+            left: 100%;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            box-shadow: 0 4px 16px rgba(102, 126, 234, 0.3);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(102, 126, 234, 0.4);
+        }
+
+        .btn-primary:active {
+            transform: translateY(0);
+        }
+
+        .btn-secondary {
+            background: #f8f9fa;
+            color: #6c757d;
+            border: 2px solid #e9ecef;
+        }
+
+        .btn-secondary:hover {
+            background: #e9ecef;
+            border-color: #dee2e6;
+            transform: translateY(-1px);
+        }
+
+        .btn-outline {
+            background: transparent;
+            color: #667eea;
+            border: 2px solid #667eea;
+        }
+
+        .btn-outline:hover {
+            background: #667eea;
+            color: white;
+            transform: translateY(-1px);
+        }
+
+        .btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none !important;
+        }
+
+        .btn-group {
+            display: flex;
+            gap: 16px;
+            margin-top: 32px;
+            flex-wrap: wrap;
+        }
+
+        .alert {
+            padding: 16px 20px;
+            border-radius: 12px;
+            margin-bottom: 24px;
+            border: none;
+            font-weight: 500;
+            display: none;
+            animation: slideDown 0.3s ease-out;
+        }
+
+        @keyframes slideDown {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .alert.show {
+            display: block;
+        }
+
+        .alert-success {
+            background: linear-gradient(135deg, #d4edda 0%, #c3e6cb 100%);
+            color: #155724;
+            border-left: 4px solid #28a745;
+        }
+
+        .alert-error {
+            background: linear-gradient(135deg, #f8d7da 0%, #f5c6cb 100%);
+            color: #721c24;
+            border-left: 4px solid #dc3545;
+        }
+
+        .alert-info {
+            background: linear-gradient(135deg, #d1ecf1 0%, #bee5eb 100%);
+            color: #0c5460;
+            border-left: 4px solid #17a2b8;
+        }
+
+        .license-info {
+            background: #f8f9fc;
+            border-radius: 16px;
+            padding: 24px;
+            margin-top: 24px;
+        }
+
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+        }
+
+        .info-item {
+            background: white;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+            border-left: 4px solid #667eea;
+        }
+
+        .info-item .label {
+            font-size: 12px;
+            font-weight: 600;
+            color: #6c757d;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 4px;
+        }
+
+        .info-item .value {
+            font-size: 16px;
+            font-weight: 600;
+            color: #2c3e50;
+        }
+
+        .examples {
+            background: #fff3cd;
+            border: 1px solid #ffeaa7;
+            border-radius: 12px;
+            padding: 20px;
+            margin-top: 24px;
+        }
+
+        .examples h4 {
+            color: #856404;
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .example-keys {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+
+        .key-item {
+            background: #fff;
+            border: 1px solid #ffeaa7;
+            border-radius: 8px;
+            padding: 8px 16px;
+            font-family: 'SF Mono', 'Monaco', 'Cascadia Code', monospace;
+            font-size: 14px;
+            color: #856404;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .key-item:hover {
+            background: #ffeaa7;
+            transform: translateY(-1px);
+        }
+
+        .feature-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 16px;
+            margin-top: 24px;
+        }
+
+        .feature-item {
+            background: white;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+            text-align: center;
+            transition: transform 0.2s ease;
+        }
+
+        .feature-item:hover {
+            transform: translateY(-2px);
+        }
+
+        .feature-item i {
+            font-size: 32px;
+            color: #667eea;
+            margin-bottom: 12px;
+        }
+
+        .feature-item h4 {
+            color: #2c3e50;
+            margin-bottom: 8px;
+            font-size: 16px;
+        }
+
+        .feature-item p {
+            color: #6c757d;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        /* 联系方式样式 */
+        .contact-section {
+            background: linear-gradient(135deg, #f8f9fc 0%, #e9ecef 100%);
+            border-radius: 16px;
+            padding: 30px;
+            margin-top: 24px;
+        }
+
+        .contact-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .contact-header h3 {
+            color: #2c3e50;
+            font-size: 24px;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .contact-header p {
+            color: #6c757d;
+            font-size: 16px;
+        }
+
+        .contact-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .contact-card {
+            background: white;
+            border-radius: 12px;
+            padding: 24px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+            transition: all 0.3s ease;
+            border: 1px solid #e9ecef;
+        }
+
+        .contact-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+            border-color: #667eea;
+        }
+
+        .contact-card .icon {
+            font-size: 36px;
+            margin-bottom: 16px;
+            text-align: center;
+            color: #667eea;
+        }
+
+        .contact-card h4 {
+            color: #2c3e50;
+            font-size: 18px;
+            margin-bottom: 12px;
+            text-align: center;
+            font-weight: 600;
+        }
+
+        .contact-card .contact-info {
+            text-align: center;
+            margin-bottom: 16px;
+        }
+
+        .contact-card .contact-value {
+            font-family: 'SF Mono', 'Monaco', 'Cascadia Code', monospace;
+            font-size: 16px;
+            color: #495057;
+            background: #f8f9fa;
+            padding: 8px 12px;
+            border-radius: 6px;
+            margin: 8px 0;
+            border: 1px solid #e9ecef;
+        }
+
+        .contact-card .btn-contact {
+            width: 100%;
+            padding: 12px 20px;
+            font-size: 14px;
+            border-radius: 8px;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 600;
+            text-decoration: none;
+            display: inline-block;
+            text-align: center;
+        }
+
+        .btn-qq {
+            background: linear-gradient(135deg, #12b7f5 0%, #1e90ff 100%);
+            color: white;
+        }
+
+        .btn-qq:hover {
+            background: linear-gradient(135deg, #0ea5e9 0%, #1d4ed8 100%);
+            transform: translateY(-1px);
+        }
+
+        .btn-wechat {
+            background: linear-gradient(135deg, #07c160 0%, #00d756 100%);
+            color: white;
+        }
+
+        .btn-wechat:hover {
+            background: linear-gradient(135deg, #059144 0%, #00b83f 100%);
+            transform: translateY(-1px);
+        }
+
+        .btn-email {
+            background: linear-gradient(135deg, #ea4335 0%, #fbbc04 100%);
+            color: white;
+        }
+
+        .btn-email:hover {
+            background: linear-gradient(135deg, #d33b2c 0%, #f9ab00 100%);
+            transform: translateY(-1px);
+        }
+
+        .btn-website {
+            background: linear-gradient(135deg, #8b5cf6 0%, #a855f7 100%);
+            color: white;
+        }
+
+        .btn-website:hover {
+            background: linear-gradient(135deg, #7c3aed 0%, #9333ea 100%);
+            transform: translateY(-1px);
+        }
+
+        .contact-tips {
+            background: #e3f2fd;
+            border: 1px solid #bbdefb;
+            border-radius: 12px;
+            padding: 20px;
+            margin-top: 20px;
+        }
+
+        .contact-tips h4 {
+            color: #1565c0;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .contact-tips ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .contact-tips li {
+            color: #1976d2;
+            margin-bottom: 8px;
+            padding-left: 20px;
+            position: relative;
+        }
+
+        .contact-tips li::before {
+            content: '💡';
+            position: absolute;
+            left: 0;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 24px;
+                margin: 10px;
+            }
+            
+            .title {
+                font-size: 24px;
+            }
+            
+            .btn-group {
+                flex-direction: column;
+            }
+            
+            .btn {
+                width: 100%;
+            }
+            
+            .tabs {
+                flex-direction: column;
+            }
+            
+            .info-grid, .contact-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .tab {
+                min-width: auto;
+            }
+        }
+
+        .loading {
+            display: inline-block;
+            width: 16px;
+            height: 16px;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            border-top-color: white;
+            animation: spin 1s ease-in-out infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* QR Code Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.8);
+            backdrop-filter: blur(5px);
+        }
+
+        .modal-content {
+            background: white;
+            margin: 5% auto;
+            padding: 30px;
+            border-radius: 16px;
+            width: 90%;
+            max-width: 400px;
+            text-align: center;
+            animation: modalSlideIn 0.3s ease-out;
+        }
+
+        @keyframes modalSlideIn {
+            from { opacity: 0; transform: translateY(-50px) scale(0.8); }
+            to { opacity: 1; transform: translateY(0) scale(1); }
+        }
+
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+            line-height: 1;
+        }
+
+        .close:hover {
+            color: #667eea;
+        }
+
+        .qr-placeholder {
+            width: 200px;
+            height: 200px;
+            background: linear-gradient(135deg, #f1f3f4 0%, #e8eaed 100%);
+            border: 2px dashed #dadce0;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 20px auto;
+            color: #5f6368;
+            font-size: 14px;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="header-icon">
+                <i class="fas fa-shield-alt"></i>
+            </div>
+            <h1 class="title">ComfyUI 许可证管理中心</h1>
+            <p class="subtitle">管理您的许可证，解锁强大的AI创作功能</p>
+        </div>
+
+        <div class="tabs">
+            <div class="tab active" data-tab="validate">
+                <i class="fas fa-key"></i> 验证许可证
+            </div>
+            <div class="tab" data-tab="info">
+                <i class="fas fa-info-circle"></i> 许可证信息
+            </div>
+            <div class="tab" data-tab="features">
+                <i class="fas fa-star"></i> 功能特性
+            </div>
+            <div class="tab" data-tab="contact">
+                <i class="fas fa-headset"></i> 联系客服
+            </div>
+        </div>
+
+        <!-- 验证许可证面板 -->
+        <div class="tab-content active" id="validate">
+            <div class="alert" id="alertBox"></div>
+            
+            <div class="form-group">
+                <label for="licenseKey">
+                    <i class="fas fa-key"></i>
+                    许可证密钥
+                </label>
+                <div class="input-wrapper">
+                    <input type="text" 
+                           id="licenseKey" 
+                           class="form-control" 
+                           placeholder="请输入您的许可证密钥..."
+                           autocomplete="off">
+                </div>
+            </div>
+
+            <div class="btn-group">
+                <button id="validateBtn" class="btn btn-primary">
+                    <i class="fas fa-check-circle"></i>
+                    <span>验证许可证</span>
+                </button>
+                <button id="clearBtn" class="btn btn-secondary">
+                    <i class="fas fa-eraser"></i>
+                    清空
+                </button>
+                <button id="exampleBtn" class="btn btn-outline">
+                    <i class="fas fa-flask"></i>
+                    使用示例
+                </button>
+            </div>
+
+            <div class="examples">
+                <h4>
+                    <i class="fas fa-lightbulb"></i>
+                    测试许可证密钥
+                </h4>
+                <div class="example-keys">
+                    <span class="key-item" onclick="useExampleKey('test123')">test123</span>
+                    <span class="key-item" onclick="useExampleKey('demo456')">demo456</span>
+                    <span class="key-item" onclick="useExampleKey('admin789')">admin789</span>
+                </div>
+                <p style="margin-top: 12px; color: #856404; font-size: 14px;">
+                    <i class="fas fa-info-circle"></i>
+                    点击上方密钥可快速填入输入框进行测试
+                </p>
+            </div>
+        </div>
+
+        <!-- 许可证信息面板 -->
+        <div class="tab-content" id="info">
+            <div class="alert" id="infoAlertBox"></div>
+            
+            <div class="form-group">
+                <label for="infoLicenseKey">
+                    <i class="fas fa-search"></i>
+                    查询许可证密钥
+                </label>
+                <input type="text" 
+                       id="infoLicenseKey" 
+                       class="form-control" 
+                       placeholder="输入许可证密钥查看详细信息...">
+            </div>
+
+            <div class="btn-group">
+                <button id="queryBtn" class="btn btn-primary">
+                    <i class="fas fa-search"></i>
+                    查询信息
+                </button>
+            </div>
+
+            <div class="license-info" id="licenseInfo" style="display: none;">
+                <h4 style="margin-bottom: 20px; color: #2c3e50;">
+                    <i class="fas fa-certificate"></i>
+                    许可证详细信息
+                </h4>
+                <div class="info-grid" id="infoGrid">
+                    <!-- 动态生成许可证信息 -->
+                </div>
+            </div>
+        </div>
+
+        <!-- 功能特性面板 -->
+        <div class="tab-content" id="features">
+            <h3 style="margin-bottom: 24px; color: #2c3e50; text-align: center;">
+                <i class="fas fa-magic"></i>
+                ComfyUI 高级功能
+            </h3>
+            
+            <div class="feature-list">
+                <div class="feature-item">
+                    <i class="fas fa-paint-brush"></i>
+                    <h4>AI图像生成</h4>
+                    <p>使用最先进的AI模型生成高质量图像，支持多种艺术风格</p>
+                </div>
+                <div class="feature-item">
+                    <i class="fas fa-video"></i>
+                    <h4>视频处理</h4>
+                    <p>强大的视频生成和编辑功能，支持AI驱动的视频创作</p>
+                </div>
+                <div class="feature-item">
+                    <i class="fas fa-project-diagram"></i>
+                    <h4>自定义工作流</h4>
+                    <p>灵活的节点式工作流系统，可创建复杂的AI处理管线</p>
+                </div>
+                <div class="feature-item">
+                    <i class="fas fa-rocket"></i>
+                    <h4>高级功能</h4>
+                    <p>更多专业级功能，包括批量处理、API集成等</p>
+                </div>
+                <div class="feature-item">
+                    <i class="fas fa-cloud"></i>
+                    <h4>云端同步</h4>
+                    <p>工作流和设置云端同步，随时随地访问您的创作</p>
+                </div>
+                <div class="feature-item">
+                    <i class="fas fa-users"></i>
+                    <h4>团队协作</h4>
+                    <p>支持多用户协作，共享工作流和资源库</p>
+                </div>
+            </div>
+
+            <div style="text-align: center; margin-top: 32px;">
+                <a href="/" class="btn btn-primary">
+                    <i class="fas fa-arrow-left"></i>
+                    返回主界面
+                </a>
+            </div>
+        </div>
+
+        <!-- 联系客服面板 -->
+        <div class="tab-content" id="contact">
+            <div class="contact-section">
+                <div class="contact-header">
+                    <h3>
+                        <i class="fas fa-headset"></i>
+                        联系客服支持
+                    </h3>
+                    <p>需要帮助？我们的客服团队随时为您提供专业支持</p>
+                </div>
+
+                <div class="contact-grid">
+                    <!-- QQ客服 -->
+                    <div class="contact-card">
+                        <div class="icon">
+                            <i class="fab fa-qq"></i>
+                        </div>
+                        <h4>QQ客服</h4>
+                        <div class="contact-info">
+                            <div class="contact-value">1070771328</div>
+                            <p style="color: #6c757d; font-size: 14px; margin: 8px 0;">
+                                在线时间：9:00 - 22:00
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- 微信客服 -->
+                    <div class="contact-card">
+                        <div class="icon">
+                            <i class="fab fa-weixin"></i>
+                        </div>
+                        <h4>微信客服</h4>
+                        <div class="contact-info">
+                            <div class="contact-value">YCWL0426</div>
+                            <p style="color: #6c757d; font-size: 14px; margin: 8px 0;">
+                                搜索微信号添加
+                            </p>
+                        </div>
+                     
+                    </div>
+
+                    <!-- 邮箱支持 -->
+                    <div class="contact-card">
+                        <div class="icon">
+                            <i class="fas fa-envelope"></i>
+                        </div>
+                        <h4>邮箱支持</h4>
+                        <div class="contact-info">
+                            <div class="contact-value">1070771328@qq.com</div>
+                            <p style="color: #6c757d; font-size: 14px; margin: 8px 0;">
+                                24小时内回复
+                            </p>
+                        </div>
+                 
+                    </div>
+
+                  
+
+                <div class="contact-tips">
+                    <h4>
+                        <i class="fas fa-lightbulb"></i>
+                        联系客服小贴士
+                    </h4>
+                    <ul>
+                        <li>购买许可证请联系QQ或微信客服</li>
+                        <li>技术问题建议先查看官网文档</li>
+                        <li>许可证激活问题请提供订单号</li>
+                        <li>批量采购可享受优惠折扣</li>
+                        <li>企业用户可申请定制开发服务</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 微信二维码模态框 -->
+    <div id="wechatModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeWechatModal()">&times;</span>
+            <h3 style="color: #2c3e50; margin-bottom: 20px;">
+                <i class="fab fa-weixin" style="color: #07c160;"></i>
+                微信客服二维码
+            </h3>
+            <div class="qr-placeholder">
+                <div>
+                    <i class="fas fa-qrcode" style="font-size: 48px; color: #07c160; margin-bottom: 10px;"></i>
+                    <br>
+                    微信号: ComfyUI_Support
+                    <br>
+                    <small style="color: #999;">请使用微信扫描或搜索添加</small>
+                </div>
+            </div>
+            <p style="color: #6c757d; font-size: 14px; margin-top: 15px;">
+                如无法扫码，请手动搜索微信号：<strong>ComfyUI_Support</strong>
+            </p>
+        </div>
+    </div>
+
+    <script>
+        // 标签页切换
+        document.querySelectorAll('.tab').forEach(tab => {
+            tab.addEventListener('click', () => {
+                // 移除所有活动状态
+                document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+                document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
+                
+                // 添加当前活动状态
+                tab.classList.add('active');
+                document.getElementById(tab.dataset.tab).classList.add('active');
+            });
+        });
+
+        // 许可证验证
+        document.getElementById('validateBtn').addEventListener('click', async function() {
+            const key = document.getElementById('licenseKey').value.trim();
+            const btn = this;
+            const originalText = btn.innerHTML;
+            
+            if (!key) {
+                showAlert('请输入许可证密钥', 'error');
+                return;
+            }
+
+            btn.disabled = true;
+            btn.innerHTML = '<span class="loading"></span> 验证中...';
+
+            try {
+                const response = await fetch('/license/validate', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ license_key: key })
+                });
+
+                const result = await response.json();
+
+                if (result.valid) {
+                    showAlert(`✅ 验证成功！欢迎使用 ComfyUI`, 'success');
+                    // 保存验证状态并跳转
+                    setTimeout(() => {
+                        sessionStorage.setItem('comfyui_license_key', key);
+                        sessionStorage.setItem('comfyui_validated', 'true');
+                        window.location.href = "/";
+                    }, 2000);
+                } else {
+                    showAlert(`❌ ${result.message || '验证失败，请检查您的许可证密钥'}`, 'error');
+                }
+            } catch (error) {
+                console.error('验证请求失败:', error);
+                showAlert('❌ 网络请求失败，请稍后重试', 'error');
+            } finally {
+                btn.disabled = false;
+                btn.innerHTML = originalText;
+            }
+        });
+
+        // 许可证信息查询
+        document.getElementById('queryBtn').addEventListener('click', async function() {
+            const key = document.getElementById('infoLicenseKey').value.trim();
+            const btn = this;
+            const originalText = btn.innerHTML;
+            
+            if (!key) {
+                showInfoAlert('请输入许可证密钥', 'error');
+                return;
+            }
+
+            btn.disabled = true;
+            btn.innerHTML = '<span class="loading"></span> 查询中...';
+
+            try {
+                const response = await fetch('/license/info', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ license_key: key })
+                });
+
+                const result = await response.json();
+
+                if (result.error) {
+                    showInfoAlert(`❌ ${result.error}`, 'error');
+                    document.getElementById('licenseInfo').style.display = 'none';
+                } else {
+                    showInfoAlert('✅ 查询成功', 'success');
+                    displayLicenseInfo(result);
+                }
+            } catch (error) {
+                console.error('查询请求失败:', error);
+                showInfoAlert('❌ 网络请求失败，请稍后重试', 'error');
+                document.getElementById('licenseInfo').style.display = 'none';
+            } finally {
+                btn.disabled = false;
+                btn.innerHTML = originalText;
+            }
+        });
+
+        // 其他按钮事件
+        document.getElementById('clearBtn').addEventListener('click', function() {
+            document.getElementById('licenseKey').value = '';
+            hideAlert();
+        });
+
+        document.getElementById('exampleBtn').addEventListener('click', function() {
+            document.getElementById('licenseKey').value = 'test123';
+        });
+
+        // 回车键验证
+        document.getElementById('licenseKey').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                document.getElementById('validateBtn').click();
+            }
+        });
+
+        document.getElementById('infoLicenseKey').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                document.getElementById('queryBtn').click();
+            }
+        });
+
+        // 联系方式相关函数
+        function contactQQ() {
+            // 尝试打开QQ聊天
+            const qqUrl = 'tencent://message/?uin=123456789&Site=&Menu=yes';
+            const newWindow = window.open(qqUrl, '_blank');
+            
+            // 如果无法打开QQ，提供备选方案
+            setTimeout(() => {
+                if (!newWindow) {
+                    alert('请手动添加QQ号：123456789\n或复制链接到浏览器：' + qqUrl);
+                }
+            }, 1000);
+        }
+
+        function showWechatQR() {
+            document.getElementById('wechatModal').style.display = 'block';
+        }
+
+        function closeWechatModal() {
+            document.getElementById('wechatModal').style.display = 'none';
+        }
+
+        // 点击模态框外部关闭
+        window.onclick = function(event) {
+            const modal = document.getElementById('wechatModal');
+            if (event.target == modal) {
+                modal.style.display = 'none';
+            }
+        }
+
+        // 工具函数
+        function showAlert(message, type) {
+            const alertBox = document.getElementById('alertBox');
+            alertBox.className = `alert alert-${type} show`;
+            alertBox.textContent = message;
+            
+            if (type === 'success') {
+                setTimeout(() => hideAlert(), 5000);
+            }
+        }
+
+        function hideAlert() {
+            const alertBox = document.getElementById('alertBox');
+            alertBox.classList.remove('show');
+        }
+
+        function showInfoAlert(message, type) {
+            const alertBox = document.getElementById('infoAlertBox');
+            alertBox.className = `alert alert-${type} show`;
+            alertBox.textContent = message;
+            
+            if (type === 'success') {
+                setTimeout(() => hideInfoAlert(), 3000);
+            }
+        }
+
+        function hideInfoAlert() {
+            const alertBox = document.getElementById('infoAlertBox');
+            alertBox.classList.remove('show');
+        }
+
+        function useExampleKey(key) {
+            document.getElementById('licenseKey').value = key;
+            document.getElementById('licenseKey').focus();
+        }
+
+        function displayLicenseInfo(info) {
+            const infoGrid = document.getElementById('infoGrid');
+            const licenseInfo = document.getElementById('licenseInfo');
+            
+            infoGrid.innerHTML = `
+                <div class="info-item">
+                    <div class="label">用户ID</div>
+                    <div class="value">${info.user_id || 'N/A'}</div>
+                </div>
+                <div class="info-item">
+                    <div class="label">状态</div>
+                    <div class="value">${info.status === 'active' ? '✅ 活跃' : '❌ 非活跃'}</div>
+                </div>
+                <div class="info-item">
+                    <div class="label">剩余使用次数</div>
+                    <div class="value">${info.remaining_uses === -1 ? '无限制' : info.remaining_uses}</div>
+                </div>
+                <div class="info-item">
+                    <div class="label">到期时间</div>
+                    <div class="value">${info.expire_time_str || 'N/A'}</div>
+                </div>
+                <div class="info-item">
+                    <div class="label">功能权限</div>
+                    <div class="value">${Array.isArray(info.features) ? info.features.join(', ') : info.features || 'N/A'}</div>
+                </div>
+                <div class="info-item">
+                    <div class="label">已使用次数</div>
+                    <div class="value">${info.current_uses || 0}</div>
+                </div>
+            `;
+            
+            licenseInfo.style.display = 'block';
+        }
+
+        // 页面加载完成后的初始化
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('ComfyUI 许可证管理页面已加载');
+        });
+    </script>
+</body>
+</html>

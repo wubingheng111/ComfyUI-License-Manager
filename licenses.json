@@ -1,0 +1,42 @@
+{
+  "licenses": {
+    "test123": {
+      "user_id": "test_user",
+      "expire_time": -1,
+      "max_uses": -1,
+      "current_uses": 0,
+      "features": [
+        "all"
+      ],
+      "status": "active",
+      "machine_id": null,
+      "created": "2025-06-16T01:56:28.359518"
+    },
+    "demo456": {
+      "user_id": "demo_user",
+      "expire_time": 1752630988,
+      "max_uses": 100,
+      "current_uses": 0,
+      "features": [
+        "basic"
+      ],
+      "status": "active",
+      "machine_id": null,
+      "created": "2025-06-16T01:56:28.359533"
+    },
+    "admin789": {
+      "user_id": "admin_user",
+      "expire_time": -1,
+      "max_uses": -1,
+      "current_uses": 0,
+      "features": [
+        "all",
+        "admin"
+      ],
+      "status": "active",
+      "machine_id": null,
+      "created": "2025-06-16T01:56:28.359538"
+    }
+  },
+  "created": "2025-06-16T01:56:28.359543"
+}

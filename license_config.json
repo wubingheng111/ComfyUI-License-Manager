@@ -1,0 +1,19 @@
+{
+  "title": "ComfyUI 许可证验证",
+  "description": "请输入有效的许可证密钥来使用此服务",
+  "contact_info": {
+    "email": "",
+    "qq": "",
+    "wechat": "",
+    "phone": ""
+  },
+  "features": [
+    "🎨 AI图像生成",
+    "🎥 视频处理",
+    "🔧 自定义工作流",
+    "💫 高级功能"
+  ],
+  "encryption_key": "WKAYct8mNji5mVQuQqI53lBPmMa7V-lThyVxMKbG7nA=",
+  "salt": "comfyui_license_salt",
+  "generator_info": "此配置由Web管理器创建于 2025-06-15 22:42:57"
+}
